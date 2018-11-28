@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>diadrastika</title>
-
-
-</head>
-<script src="libraries/p5.js"></script>
-<script src="libraries/p5.dom.js"></script>
-<script src="libraries/p5.sound.js"></script>
-<script src = "libraries/rita-full.js"></script>
-<script src="wiki.js"></script>
-<script src="sketch.js"></script>
-<script scr="markov.js"></script>
-<body>
-  <h2> Wiki thing </h2>
-  <p>
-    word: <input id = "userinput" value = "rainbow"></input>
-  </p>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>diadrastika</title>
+    <link rel="stylesheet" type="text/css" href="search.css">
+    <link rel="stylesheet" type="text/css" href="poem.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=KoHo" rel="stylesheet">
+  </head>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="libraries/p5.js"></script>
+  <script src="libraries/p5.dom.js"></script>
+  <script src="libraries/p5.sound.js"></script>
+  <script src="libraries/rita-full.js"></script>
+  <script src="wiki.js"></script>
+  <script src="sketch.js"></script>
+  <script scr="markov.js"></script>
+  <body>
+    <div class="wrap">
+      <div class="search">
+        <input type="text" id = "userinput" placeholder = "rainbow"></input>
+        <button type="submit" class="searchButton"> Go! </button>
+      </div>
+      <div id = "poemDisp">
+      </div>
+    </div>
+  </body>
 </html>
