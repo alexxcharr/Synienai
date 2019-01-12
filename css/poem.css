@@ -1,0 +1,9 @@
+#poemDisp {
+    position: relative;
+    top: 150px;;
+    font-family: 'Bitter', sans-serif;
+    font-size: 28px;
+    text-align: center;
+    /* color: #002fa7; */
+    color: #e4e4e3;
+}
