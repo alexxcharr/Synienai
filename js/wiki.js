@@ -3,65 +3,65 @@ var contentUrl = 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions
 var content;
 var userInput;
 var counter;
-var poem;
-var limit = 6;
+var limit = 5;
 var term;
 var cc = 0;
-var sen;
 var chars = [];
 var curChar;
+var regex;
 
 function startSearch() {
+    //if its now the first search fade out text
     if(cc > 0) {
         fadeOut();
     }
-    counter = 0;
-    term = userInput.value();
+    counter = 0; //counter for number of senetnces to be produced
+    term = userInput.value(); //take value from search
     goWiki(userInput.value()); //call goWiki give input
     cc = cc + 1;
-    $('.pixel-spinner *').css({ visibility: 'visible'});
-    //let url = searchUrl + term;
-    //loadJSON(url, gotSearch, 'jsonp');
-    //     $('#poemDisp').empty();
+    $('.pixel-spinner *').css({ visibility: 'visible'}); //loading
 }
 
 function goWiki(term) {
-    counter = counter + 1;
-    console.log(counter);
     if (counter < limit) {
-        // term = userInput.value();
         let url = searchUrl + term; //dynamicly change url based on input
         loadJSON(url, gotSearch, 'jsonp'); //when loaded call gotSearch
     }
+    //if counter hits limit fade in text
     if (counter == limit) {
         $('.pixel-spinner *').css({ visibility: 'hidden'});
         fadeIn();
     }
+    counter++;
 }
 
 function gotSearch(data) {
     try {
-        console.log(data); //json file includes at most 10 title of text n urls
-        let len = data[1].length; //how many articles
+        // console.log(data);
+        // data is the json file including at most 10 title of text n urls
+        //if there are no articles search undefined
         if (data[1].length == 0) {
             term = 'undefined';
             goWiki(term);
-            // fadeIn();
-            // counter = limit;
         }
-        let index = floor(random(len)); //pick random article
+        //check that the users input is being searched and not just part of it
+        //find term either with upper or lower case letters
+        regex = new RegExp('\\b'+term+'\\b', 'i');
+        console.log(regex);
+        let arr = [];
+        for (var i = 0; i <= data[1].length; i++) {
+            if (regex.test(data[1][i])) { //if regex matches with article title
+                arr.push(i); //store index
+            }
+        }
+        var index = random(arr); //pick random article
         let title = data[1][index];
         title = title.replace(/\s+/g, '_'); //replace spaces in title with _
-        //createDiv(title); //show title prob dont need it
         console.log('Querying: ' + title);
         let url = contentUrl + title; //dynamicly change content url
-        //console.log(url);
-        loadJSON(url, gotContent, 'jsonp'); //when loaded call gotContent
+        loadJSON(url, gotContent, 'jsonp'); //when json loaded call gotContent
 
     }catch(err){ //error handling
-        // console.log('error');
-        // $('#poemDisp').append("<p class =\"sen\">error </p> ");
-        // fadeIn();
         goWiki(term);
     }
 }
@@ -69,24 +69,14 @@ function gotSearch(data) {
 function gotContent(data) {
     try{
         let page = data.query.pages; //get to page id
-        let pageId = Object.keys(data.query.pages)[0]; //obj.keys returns array of a given object's own roperty names
+        //obj.keys returns array of a given object's own property names
+        let pageId = Object.keys(data.query.pages)[0];
         console.log(pageId);
         content = page[pageId].revisions[0]['*'];
-        content = content.replace(/[@#\$%&\*\(\)\+\|\_\}\{<>=\/\[\]]/g," "); //replace symbols with w space
-        content = content.replace(/\s\s+/g," ");//replace extra whitespece
-        // console.log(content);
-        let wordRegex = /\b\w{4,}\b/g; //word with more than 4 char
-        let words = content.match(wordRegex); //find that word in content
-        let word = random(words); //pick random
-        let rm = new RiMarkov(3);
-        rm.loadText(content);
-        sen =rm.generateSentence(6);
-        console.log(typeof sen);
-        $('#poemDisp').append("<p class =\"sen\"> "+sen+" </p> ");
-        $('#poemDisp').css({ visibility: 'hidden'});
-        term = word;
-        goWiki(term); //call go wiki with that word
-        console.log(word);
+        //replace symbols with w space
+        content = content.replace(/[@#\$%&\*\(\)\+\-\|\_\}\{<>=\/\[\]]/g," ");
+        content = content.replace(/\s\s+/g," "); //replace extra whitespece
+        markov();
     }catch(err){
         goWiki(term);
     }

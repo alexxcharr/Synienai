@@ -1,6 +1,6 @@
 function fadeIn() {
-    console.log('whattt');
-    chars = $('#poemDisp:last-child').blast({
+    //blast seperates every character
+    chars = $('#poemDisp').blast({
         delimiter: 'character'
     });
     $('#poemDisp').css({
@@ -8,6 +8,7 @@ function fadeIn() {
     })
         .animate({ opacity: 1 });
     chars.each(function(i) {
+        //fade in each character
         $(this).css({
             visibility: 'visible',
             opacity: 0
@@ -21,8 +22,9 @@ function fadeIn() {
 function clean() {
     $('#poemDisp').empty();
 }
+
 function fadeOut() {
-    // if(chars.length > 0) { //check if array is empty
+    //fade it all out
     $('#poemDisp').css({
         opacity: 1
     })
